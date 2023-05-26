@@ -18,7 +18,8 @@ ISP_INFO=$(curl -s https://ipinfo.io/org)
 for i in $(seq 1 $PING_ATTEMPTS)
 do
   PING_RESULT=$(ping -c 1 google.com | grep -oP 'time=\K[^\s]+')
-  if (( $(echo "$PING_RESULT > 50" | bc -l) )); then
+  PING_RESULT_INT=${PING_RESULT/./}
+  if (( PING_RESULT_INT > 500 )); then
     FAILURES=$((FAILURES+1))
     EXCEEDED_TIMES+="$PING_RESULT ms, "
   fi
