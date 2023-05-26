@@ -19,7 +19,7 @@ for i in $(seq 1 $PING_ATTEMPTS)
 do
   PING_RESULT=$(ping -c 1 google.com | grep -oP 'time=\K[^\s]+')
   PING_RESULT_INT=${PING_RESULT/./}
-  if (( PING_RESULT_INT > 500 )); then
+  if (( PING_RESULT_INT > 500 )); then # 500 to 50.0 ms or 1000 to 100.0 ms
     FAILURES=$((FAILURES+1))
     EXCEEDED_TIMES+="$PING_RESULT ms, "
   fi
