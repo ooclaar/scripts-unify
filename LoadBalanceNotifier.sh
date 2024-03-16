@@ -6,37 +6,26 @@ GROUP=$1
 INTF=$2
 STATUS=$3
 
-TOKEN="xxx:xxx"
-CHAT_ID="@xxx" # or "%40any"
+TOKEN="xxxx:xxxx"
+CHAT_ID="@xxxx" #
 
 MYLOG="/var/log/wlb"
 TS=$(date +"%T")
 
-if [ $INTF = "eth0" ]; then
+if [ $INTF == "eth0" ]; then
     QINT="Texnet"
-elif [ $INTF = "eth1" ]; then
+elif [ $INTF == "eth1" ]; then
     QINT="Vivo"
-else
+elif [ $INTF == "eth2"]; then 
     QINT="Algar"
+elif [ $INTF == "eth7"]; then
+    QINT="Vivo 2"
+else
+    QINT="Claro"
 fi
 
-case "$STATUS" in
-
- active)
-   msg="The Link $QINT is Up"
-   curl -L "https://api.telegram.org/bot$TOKEN/sendMessage?=null" -H "Content-Type: application/x-www-form-urlencoded" -d "text=$msg" -d "chat_id=$CHAT_ID"
- ;;
-
- failover)
-   msg="The Link $QINT is Down."
-   curl -L "https://api.telegram.org/bot$TOKEN/sendMessage?=null" -H "Content-Type: application/x-www-form-urlencoded" -d "text=$msg" -d "chat_id=$CHAT_ID"
- ;;
-
- *)
-    msg="The Link $QINT is Down."
-   curl -L "https://api.telegram.org/bot$TOKEN/sendMessage?=null" -H "Content-Type: application/x-www-form-urlencoded" -d "text=$msg" -d "chat_id=$CHAT_ID"
-
-esac
+msg="$QINT: Status code: $STATUS"
+curl -L "https://api.telegram.org/bot$TOKEN/sendMessage?=null" -H "Content-Type: application/x-www-form-urlencoded" -d "text=$msg" -d "chat_id=$CHAT_ID"
 
 echo $msg >> $MYLOG
 exit 0;
